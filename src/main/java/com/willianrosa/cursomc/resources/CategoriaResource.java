@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import curso.willianrosa.cursomc.domain.Categoria;
+import com.willianrosa.cursomc.domain.Categoria;
 
 @RestController
 @RequestMapping(value="/categoria")
