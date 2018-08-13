@@ -3,10 +3,12 @@ package com.willianrosa.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.willianrosa.cursomc.domain.Categoria;
 import com.willianrosa.cursomc.repositories.CategoriaRepository;
+import com.willianrosa.cursomc.services.exception.DataIntegrityException;
 import com.willianrosa.cursomc.services.exception.ObjectNotFoundException;
 
 @Service
@@ -29,5 +31,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		this.find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		}catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não foi possível excluir uma categoria que possue produtos");
+		}
 	}
 }
