@@ -1,6 +1,5 @@
 package com.willianrosa.cursomc;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
