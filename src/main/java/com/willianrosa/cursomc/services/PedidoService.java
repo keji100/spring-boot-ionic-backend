@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.willianrosa.cursomc.domain.ItemPedido;
 import com.willianrosa.cursomc.domain.PagamentoComBoleto;
 import com.willianrosa.cursomc.domain.Pedido;
+import com.willianrosa.cursomc.domain.Produto;
 import com.willianrosa.cursomc.domain.enums.EstadoPagamento;
+import com.willianrosa.cursomc.repositories.ClienteRepository;
 import com.willianrosa.cursomc.repositories.ItemPedidoRepository;
 import com.willianrosa.cursomc.repositories.PagamentoRepository;
 import com.willianrosa.cursomc.repositories.PedidoRepository;
@@ -31,10 +33,13 @@ public class PedidoService {
 	private PagamentoRepository pagamentoRepository;
 	
 	@Autowired 
-	private ProdutoRepository produtoRespository;
+	private ProdutoService produtoService;
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private ClienteService clienteService;
 	
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
@@ -45,6 +50,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setInstace(new Date());
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
 		if(obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -55,10 +61,13 @@ public class PedidoService {
 		pagamentoRepository.save(obj.getPagamento());
 		for(ItemPedido ip: obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoRespository.findById(ip.getProduto().getId()).get().getPreco());
+			Produto newProduto = produtoService.find(ip.getProduto().getId());
+			ip.setProduto(newProduto);
+			ip.setPreco(newProduto.getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getItens()); 
+		System.out.println(obj);
 		return obj;
 	}
 	
