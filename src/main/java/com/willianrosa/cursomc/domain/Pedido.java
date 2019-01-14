@@ -29,7 +29,7 @@ public class Pedido  implements Serializable{
 	private Integer id;
 
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
-	private Date instace;
+	private Date instante;
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
@@ -49,10 +49,10 @@ public class Pedido  implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pedido(Integer id, Date instace, Cliente cliente, Endereco enderecoDeEntrega) {
+	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
-		this.instace = instace;
+		this.instante = instante;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
@@ -65,12 +65,12 @@ public class Pedido  implements Serializable{
 		this.id = id;
 	}
 
-	public Date getInstace() {
-		return instace;
+	public Date getInstante() {
+		return instante;
 	}
 
-	public void setInstace(Date instace) {
-		this.instace = instace;
+	public void setInstace(Date instante) {
+		this.instante = instante;
 	}
 
 	public Pagamento getPagamento() {
@@ -145,8 +145,8 @@ public class Pedido  implements Serializable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pedido número: ");
 		builder.append(getId());
-		builder.append(", Instance: ");
-		builder.append(sdf.format(getInstace()));
+		builder.append(", Instante: ");
+		builder.append(sdf.format(getInstante()));
 		builder.append(", Cliente: ");
 		builder.append(getCliente().getNome());
 		builder.append(", Situação do pagamento: ");
